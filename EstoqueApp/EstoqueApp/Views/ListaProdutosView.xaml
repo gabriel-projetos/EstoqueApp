@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EstoqueApp.Views.ListaProdutosView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="http://prismlibrary.com"
+    Title="{Binding Title}"
+    prism:ViewModelLocator.AutowireViewModel="True">
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <ScrollView Grid.Row="0">
+                <StackLayout
+                    x:Name="CategoryStack"
+                    Margin="8"
+                    BindableLayout.ItemsSource="{Binding Produtos}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                                Padding="8"
+                                BackgroundColor="LightGray"
+                                CornerRadius="8">
+                                <StackLayout Orientation="Horizontal">
+                                    <Image
+                                        HeightRequest="50"
+                                        Source="box.png"
+                                        WidthRequest="50" />
+                                    <StackLayout>
+                                        <Label Text="{Binding Nome}" TextColor="Black" />
+                                        <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}" />
+                                        <Label Text="{Binding Valor, StringFormat='R$ {0}'}" />
+                                    </StackLayout>
+                                    <Image
+                                        BackgroundColor="Transparent"
+                                        HeightRequest="20"
+                                        HorizontalOptions="EndAndExpand"
+                                        Source="editar.png"
+                                        WidthRequest="25">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.Editar, Source={x:Reference CategoryStack}}" CommandParameter="{Binding .}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Image
+                                        Margin="10,0,0,0"
+                                        BackgroundColor="Transparent"
+                                        HeightRequest="20"
+                                        Source="delete.png"
+                                        WidthRequest="25">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.Deletar, Source={x:Reference CategoryStack}}" CommandParameter="{Binding Id}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </ScrollView>
+
+            <ImageButton
+                Grid.Row="0"
+                Margin="0,0,20,20"
+                BackgroundColor="LightSkyBlue"
+                BorderColor="LightSkyBlue"
+                BorderWidth="1"
+                Command="{Binding AdicionarProdutoCommand}"
+                CornerRadius="30"
+                HeightRequest="60"
+                HorizontalOptions="End"
+                Source="plus.png"
+                VerticalOptions="End"
+                WidthRequest="60" />
+
+        </Grid>
+    </RefreshView>
+
+</ContentPage>
